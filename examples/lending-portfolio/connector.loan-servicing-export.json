@@ -1,0 +1,27 @@
+{
+  "connector": "loan-servicing-export-to-lending-portfolio",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common loan-servicing / core-banking export up with the lending-portfolio pack's fields. Rename the left side to match your export's headers. Load de-identified records only.",
+  "target_pack": "lending-portfolio",
+  "source": "Loan servicing / core banking export (CSV)",
+  "column_map": {
+    "Loan Number": "id",
+    "Lender": "lender",
+    "Borrower": "borrower",
+    "Product Type": "product",
+    "City": "city",
+    "State": "state",
+    "Loan Status": "status",
+    "Outstanding Principal": "principal",
+    "Interest Collected YTD": "interest_collected",
+    "Term (months)": "term_months",
+    "Note Rate": "rate_pct",
+    "LTV": "ltv_pct"
+  },
+  "value_hints": {
+    "principal": "strip $ and commas — Aris reads money either way",
+    "rate_pct": "a number like 6.6, not the string '6.6%'",
+    "borrower": "de-identify per your compliance rules"
+  },
+  "note": "No code here — a connector is a column-to-field map. Your servicing data never leaves your control except as the records you choose to load."
+}

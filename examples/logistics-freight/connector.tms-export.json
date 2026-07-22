@@ -1,0 +1,27 @@
+{
+  "connector": "tms-export-to-logistics-freight",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common TMS (transportation management) shipment export up with the logistics-freight pack's fields. Rename the left side to match your export's headers.",
+  "target_pack": "logistics-freight",
+  "source": "TMS shipment / load export (CSV)",
+  "column_map": {
+    "Load #": "id",
+    "Carrier": "carrier",
+    "Lane": "lane",
+    "Origin": "origin_city",
+    "Destination": "dest_city",
+    "Service": "mode",
+    "Load Status": "status",
+    "Carrier Cost": "freight_cost",
+    "Customer Rate": "revenue",
+    "Billable Weight": "weight_lbs",
+    "Transit Days": "transit_days",
+    "On-Time %": "on_time_pct"
+  },
+  "value_hints": {
+    "freight_cost": "strip $ and commas — Aris reads money either way",
+    "on_time_pct": "a number like 80.0, not the string '80%'",
+    "Service": "FTL / LTL / Reefer / Intermodal all map straight through to mode"
+  },
+  "note": "No code here — a connector is a column-to-field map. Your TMS export never leaves your control except as the records you choose to load."
+}

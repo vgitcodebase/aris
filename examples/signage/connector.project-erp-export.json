@@ -1,0 +1,27 @@
+{
+  "connector": "project-erp-export-to-signage",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common project/ERP job export up with the signage pack's fields. Rename the left side to match your export's headers.",
+  "target_pack": "signage",
+  "source": "Project management / ERP job export (CSV)",
+  "column_map": {
+    "Project #": "id",
+    "Client": "brand",
+    "Program": "program",
+    "City": "city",
+    "State": "state",
+    "Product": "product_name",
+    "Install Partner": "partner_name",
+    "Phase": "phase",
+    "Contract Value": "contract",
+    "Build Cost": "build_cost",
+    "Margin %": "margin_pct",
+    "Sign Qty": "qty"
+  },
+  "value_hints": {
+    "contract": "strip $ and commas — Aris reads money either way",
+    "margin_pct": "a number like 24.8, not the string '24.8%'",
+    "Client": "your 'client'/'account'/'brand' column maps to brand"
+  },
+  "note": "No code here — a connector is a column-to-field map. Your job data never leaves your control except as the records you choose to load."
+}

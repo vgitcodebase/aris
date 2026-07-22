@@ -1,0 +1,27 @@
+{
+  "connector": "lease-admin-export-to-commercial-leasing",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common lease-administration / property-management export up with the commercial-leasing pack's fields. Rename the left side to match your export's headers.",
+  "target_pack": "commercial-leasing",
+  "source": "Lease administration / property management export (CSV)",
+  "column_map": {
+    "Lease ID": "id",
+    "Property": "property",
+    "Tenant": "tenant",
+    "City": "city",
+    "State": "state",
+    "Use Type": "space_type",
+    "Lease Status": "status",
+    "Annual Base Rent": "annual_rent",
+    "TI Allowance": "tenant_improvement",
+    "Rentable SF": "sqft",
+    "Term (months)": "term_months",
+    "Occupancy %": "occupancy_pct"
+  },
+  "value_hints": {
+    "annual_rent": "strip $ and commas — Aris reads money either way",
+    "occupancy_pct": "a number like 92.9, not the string '92.9%'",
+    "Use Type": "Office / Retail / Warehouse / Medical map straight through to space_type"
+  },
+  "note": "No code here — a connector is a column-to-field map. Your rent roll never leaves your control except as the records you choose to load."
+}

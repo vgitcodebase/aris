@@ -36,11 +36,16 @@ data file describing *your* vocabulary and how *your* records should read back:
 You publish the pack, point Aris at your records through the API, and you get cited and
 computed answers with signed receipts. That's the whole surface.
 
-**Want to see a finished tool first?** [examples/](examples) has **complete worked tools** —
+**Want to see a finished tool first?** [examples/](examples) has **seven complete worked tools** —
 each a pack, 14 real records, a connector, and the exact cited, signed answers it gives back.
 Clone one, point it at your records, done:
-[field-audit](examples/field-audit) (equipment audits), [retail-store-network](examples/retail-store-network)
-(a store chain), [clinic-scheduling](examples/clinic-scheduling) (clinic visits).
+[field-audit](examples/field-audit),
+[retail-store-network](examples/retail-store-network),
+[clinic-scheduling](examples/clinic-scheduling),
+[logistics-freight](examples/logistics-freight),
+[commercial-leasing](examples/commercial-leasing),
+[lending-portfolio](examples/lending-portfolio),
+[signage](examples/signage).
 
 **Ready to build? Start with the [Starter Kit](STARTER-KIT.md)** — a phrasebook plus seven
 worked example packs (signage, retail, logistics, leasing, field service, lending,
@@ -74,6 +79,32 @@ production and custom verticals. See **[PROGRAM.md](PROGRAM.md)**.
 The community pack library is the heart of this program — every domain someone packs
 makes Aris more useful for everyone. Contributions are welcome for **packs, connectors,
 and integration examples**. See **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+
+## Packs the community could build
+
+The seven worked tools above are a start, not the map. **If your field keeps records with
+names, places, money, counts, and status, it can be a pack.** Here are open domains worth
+building — pick one, model ~14 synthetic records, and open a PR:
+
+| Domain | Records look like… | Questions it would answer |
+| --- | --- | --- |
+| **Insurance claims** | claim, adjuster, peril, payout, status | "total payouts in Florida?", "average cycle time by adjuster?" |
+| **Construction / GC** | job, trade, change orders, cost, phase | "which job has the most change orders?", "total committed cost?" |
+| **Hospitality / hotels** | property, room nights, ADR, occupancy | "average ADR in Q3?", "occupancy at the downtown property?" |
+| **Municipal permits** | permit, department, fee, applicant, status | "how many permits pending review?", "total fees collected?" |
+| **Manufacturing runs** | line, product, yield, downtime, shift | "worst-yield line last month?", "total downtime by plant?" |
+| **Legal matters** | matter, practice, client, hours, billing | "hours on the Acme matter?", "average bill by practice?" |
+| **Grants / nonprofit** | grant, program, funder, award, spend | "total awarded this year?", "spend-down on the youth program?" |
+| **Fleet management** | vehicle, driver, mileage, maintenance cost | "highest-mileage vehicle?", "total maintenance by depot?" |
+| **Warranty / RMA** | return, product, reason, cost, disposition | "top return reason?", "warranty cost by product line?" |
+| **Sales pipeline** | deal, rep, stage, value, close date | "pipeline value by rep?", "how many deals in negotiation?" |
+| **Higher-ed enrollment** | program, term, headcount, tuition, status | "enrollment by program?", "total tuition this term?" |
+| **Utilities / assets** | asset, feeder, output, outages, region | "outage count by region?", "total output by substation?" |
+
+Copy the closest [example tool](examples), keep the four-part shape (your fields, your
+words, how numbers read, how a record reads back), add synthetic records, and — importantly —
+**verify your walkthrough numbers against your own records** before you PR. Aris is the AI
+that cites; an example has to be exact.
 
 ## The one boundary
 
