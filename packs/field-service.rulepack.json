@@ -1,0 +1,48 @@
+{
+  "pack": "field-service",
+  "version": "0",
+  "description": "Example pack: equipment install & maintenance work orders — labor, parts, and SLA.",
+  "record_schema": {
+    "id": "string",
+    "account": "string",
+    "site": "string",
+    "city": "string",
+    "state": "string",
+    "equipment": "string",
+    "technician": "string",
+    "status": "string",
+    "labor_cost": "money",
+    "parts_cost": "money",
+    "hours": "number",
+    "sla_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "longest": "max", "most": "max", "highest": "max",
+      "shortest": "min", "least": "min", "lowest": "min"
+    },
+    "metric": {
+      "labor": "labor_cost", "cost": "labor_cost",
+      "parts": "parts_cost", "materials": "parts_cost",
+      "hours": "hours", "time": "hours",
+      "sla": "sla_pct", "attainment": "sla_pct"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "job", "jobs", "order", "orders", "how", "many", "what", "is", "are", "on", "at"]
+  },
+  "compute": {
+    "units":  { "labor_cost": "$", "parts_cost": "$", "hours": "", "sla_pct": "%" },
+    "labels": { "labor_cost": "labor cost", "parts_cost": "parts cost", "hours": "hours on site", "sla_pct": "SLA attainment" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["account", "equipment"], "text": "For {account}, service on the {equipment}" },
+      { "when": ["city", "state"],        "text": "in {city}, {state}" },
+      { "when": ["technician"],           "text": "by {technician}" },
+      { "when": ["status"],               "text": ". Status: {status}." }
+    ],
+    "fields": ["account", "site", "city", "state", "equipment", "technician", "status", "labor_cost"]
+  }
+}

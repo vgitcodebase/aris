@@ -1,0 +1,49 @@
+{
+  "pack": "retail-store-network",
+  "version": "0",
+  "description": "Example pack: a multi-store retail chain — sales, rent, and margin by location.",
+  "record_schema": {
+    "id": "string",
+    "chain": "string",
+    "store_name": "string",
+    "city": "string",
+    "state": "string",
+    "format": "string",
+    "manager": "string",
+    "status": "string",
+    "monthly_sales": "money",
+    "rent": "money",
+    "sqft": "number",
+    "margin_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median", "typical": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "highest": "max", "top": "max", "most": "max",
+      "lowest": "min", "smallest": "min", "least": "min"
+    },
+    "metric": {
+      "sales": "monthly_sales", "revenue": "monthly_sales", "takings": "monthly_sales",
+      "rent": "rent", "lease": "rent",
+      "margin": "margin_pct", "profit": "margin_pct",
+      "size": "sqft", "sqft": "sqft", "footprint": "sqft"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "store", "stores", "how", "many", "what", "is", "are", "in", "at"]
+  },
+  "compute": {
+    "units":  { "monthly_sales": "$", "rent": "$", "sqft": "", "margin_pct": "%" },
+    "labels": { "monthly_sales": "monthly sales", "rent": "rent", "sqft": "floor area (sq ft)", "margin_pct": "margin" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["chain", "store_name"], "text": "{chain} — {store_name}" },
+      { "when": ["city", "state"],       "text": "in {city}, {state}" },
+      { "when": ["format"],              "text": "({format})" },
+      { "when": ["manager"],             "text": "managed by {manager}" },
+      { "when": ["status"],              "text": ". Status: {status}." }
+    ],
+    "fields": ["chain", "store_name", "city", "state", "format", "manager", "status", "monthly_sales"]
+  }
+}

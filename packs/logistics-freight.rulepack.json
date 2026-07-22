@@ -1,0 +1,49 @@
+{
+  "pack": "logistics-freight",
+  "version": "0",
+  "description": "Example pack: freight shipments across carriers and lanes — cost, revenue, and reliability.",
+  "record_schema": {
+    "id": "string",
+    "carrier": "string",
+    "lane": "string",
+    "origin_city": "string",
+    "dest_city": "string",
+    "mode": "string",
+    "status": "string",
+    "freight_cost": "money",
+    "revenue": "money",
+    "weight_lbs": "number",
+    "transit_days": "number",
+    "on_time_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "longest": "max", "most": "max", "highest": "max",
+      "shortest": "min", "fastest": "min", "lowest": "min"
+    },
+    "metric": {
+      "cost": "freight_cost", "spend": "freight_cost", "freight": "freight_cost",
+      "revenue": "revenue", "billed": "revenue",
+      "weight": "weight_lbs", "tonnage": "weight_lbs",
+      "transit": "transit_days", "days": "transit_days",
+      "reliability": "on_time_pct", "ontime": "on_time_pct"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "shipment", "shipments", "how", "many", "what", "is", "are", "on", "to"]
+  },
+  "compute": {
+    "units":  { "freight_cost": "$", "revenue": "$", "weight_lbs": "", "transit_days": "", "on_time_pct": "%" },
+    "labels": { "freight_cost": "freight cost", "revenue": "revenue", "weight_lbs": "weight (lbs)", "transit_days": "transit (days)", "on_time_pct": "on-time rate" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["carrier", "lane"],          "text": "{carrier} on the {lane} lane" },
+      { "when": ["origin_city", "dest_city"], "text": "({origin_city} → {dest_city})" },
+      { "when": ["mode"],                     "text": "by {mode}" },
+      { "when": ["status"],                   "text": ". Status: {status}." }
+    ],
+    "fields": ["carrier", "lane", "origin_city", "dest_city", "mode", "status", "revenue"]
+  }
+}

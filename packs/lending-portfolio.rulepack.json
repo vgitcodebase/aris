@@ -1,0 +1,49 @@
+{
+  "pack": "lending-portfolio",
+  "version": "0",
+  "description": "Example pack: a lending book — principal, interest, rate, and loan-to-value by borrower.",
+  "record_schema": {
+    "id": "string",
+    "lender": "string",
+    "borrower": "string",
+    "product": "string",
+    "city": "string",
+    "state": "string",
+    "status": "string",
+    "principal": "money",
+    "interest_collected": "money",
+    "term_months": "number",
+    "rate_pct": "percent",
+    "ltv_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "highest": "max", "largest": "max", "most": "max",
+      "lowest": "min", "smallest": "min", "least": "min"
+    },
+    "metric": {
+      "principal": "principal", "balance": "principal", "loan": "principal",
+      "interest": "interest_collected", "collected": "interest_collected",
+      "rate": "rate_pct", "apr": "rate_pct",
+      "ltv": "ltv_pct",
+      "term": "term_months", "length": "term_months"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "loan", "loans", "how", "many", "what", "is", "are", "in", "at"]
+  },
+  "compute": {
+    "units":  { "principal": "$", "interest_collected": "$", "term_months": "", "rate_pct": "%", "ltv_pct": "%" },
+    "labels": { "principal": "principal", "interest_collected": "interest collected", "term_months": "term (months)", "rate_pct": "rate", "ltv_pct": "loan-to-value" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["borrower", "product"], "text": "{borrower} — {product}" },
+      { "when": ["lender"],              "text": "through {lender}" },
+      { "when": ["city", "state"],       "text": "({city}, {state})" },
+      { "when": ["status"],              "text": ". Status: {status}." }
+    ],
+    "fields": ["lender", "borrower", "product", "city", "state", "status", "principal"]
+  }
+}

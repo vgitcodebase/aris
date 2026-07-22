@@ -1,0 +1,49 @@
+{
+  "pack": "commercial-leasing",
+  "version": "0",
+  "description": "Example pack: commercial real-estate leases — rent, improvements, term, and occupancy.",
+  "record_schema": {
+    "id": "string",
+    "property": "string",
+    "tenant": "string",
+    "city": "string",
+    "state": "string",
+    "space_type": "string",
+    "status": "string",
+    "annual_rent": "money",
+    "tenant_improvement": "money",
+    "sqft": "number",
+    "term_months": "number",
+    "occupancy_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "largest": "max", "highest": "max", "longest": "max",
+      "smallest": "min", "lowest": "min", "shortest": "min"
+    },
+    "metric": {
+      "rent": "annual_rent", "lease": "annual_rent",
+      "ti": "tenant_improvement", "improvement": "tenant_improvement", "buildout": "tenant_improvement",
+      "size": "sqft", "sqft": "sqft", "area": "sqft",
+      "term": "term_months", "length": "term_months",
+      "occupancy": "occupancy_pct", "occupied": "occupancy_pct"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "lease", "leases", "how", "many", "what", "is", "are", "in", "at"]
+  },
+  "compute": {
+    "units":  { "annual_rent": "$", "tenant_improvement": "$", "sqft": "", "term_months": "", "occupancy_pct": "%" },
+    "labels": { "annual_rent": "annual rent", "tenant_improvement": "TI allowance", "sqft": "area (sq ft)", "term_months": "term (months)", "occupancy_pct": "occupancy" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["tenant", "property"], "text": "{tenant} at {property}" },
+      { "when": ["city", "state"],      "text": "in {city}, {state}" },
+      { "when": ["space_type"],         "text": "— {space_type} space" },
+      { "when": ["status"],             "text": ". Status: {status}." }
+    ],
+    "fields": ["property", "tenant", "city", "state", "space_type", "status", "annual_rent"]
+  }
+}

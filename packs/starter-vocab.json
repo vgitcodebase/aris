@@ -1,0 +1,26 @@
+{
+  "name": "starter-vocab",
+  "version": "0",
+  "description": "A phrasebook starter. Common words to copy into your pack's vocab so you don't begin from a blank file. This is DATA to adapt, not a fixed list — rename, add, and drop to match how YOUR people actually talk.",
+  "agg": {
+    "average": "mean", "avg": "mean", "mean": "mean",
+    "median": "median", "typical": "median", "usual": "median",
+    "total": "sum", "sum": "sum", "combined": "sum", "altogether": "sum",
+    "how many": "count", "count": "count", "number": "count",
+    "highest": "max", "largest": "max", "biggest": "max", "top": "max", "most": "max", "longest": "max",
+    "lowest": "min", "smallest": "min", "least": "min", "shortest": "min", "fastest": "min"
+  },
+  "metric_hints": {
+    "revenue": "money", "sales": "money", "income": "money", "billed": "money",
+    "cost": "money", "spend": "money", "budget": "money", "price": "money", "rent": "money", "principal": "money",
+    "margin": "percent", "rate": "percent", "occupancy": "percent", "utilization": "percent", "sla": "percent", "ltv": "percent",
+    "quantity": "number", "qty": "number", "units": "number", "volume": "number",
+    "weight": "number", "hours": "number", "days": "number", "term": "number"
+  },
+  "stop": [
+    "the", "a", "an", "of", "on", "in", "for", "our", "we", "did", "do",
+    "what", "whats", "is", "are", "how", "and", "to", "with", "by", "across",
+    "all", "have", "many", "number", "at"
+  ],
+  "note": "agg maps a word to the kind of answer (mean/median/sum/count/max/min). metric_hints suggests the field-kind a business word usually points at — use it to shape your record_schema and your vocab.metric. stop lists filler words to ignore. Validate your finished pack against packs/pack.schema.json."
+}

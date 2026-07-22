@@ -34,8 +34,12 @@ data file describing *your* vocabulary and how *your* records should read back:
 - how a matched record becomes a plain-English answer.
 
 You publish the pack, point Aris at your records through the API, and you get cited and
-computed answers with signed receipts. That's the whole surface. See **[PACKS.md](PACKS.md)**
-to author one, and **[packs/](packs/)** for working examples you can copy.
+computed answers with signed receipts. That's the whole surface.
+
+**New here? Start with the [Starter Kit](STARTER-KIT.md)** — a phrasebook plus seven
+worked example packs (signage, retail, logistics, leasing, field service, lending,
+clinic). Copy the closest one and change the words. See **[PACKS.md](PACKS.md)** for the
+four things a pack defines.
 
 ```
 Your records  ──▶  Aris (sealed)  ──▶  cited / computed answer + signed receipt
