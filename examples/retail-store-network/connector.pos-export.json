@@ -1,0 +1,27 @@
+{
+  "connector": "pos-export-to-retail-store-network",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common POS/back-office store export up with the retail-store-network pack's fields. Rename the left side to match your export's headers.",
+  "target_pack": "retail-store-network",
+  "source": "POS / back-office monthly store export (CSV)",
+  "column_map": {
+    "Store ID": "id",
+    "Banner": "chain",
+    "Store Name": "store_name",
+    "City": "city",
+    "State": "state",
+    "Store Type": "format",
+    "Store Manager": "manager",
+    "Store Status": "status",
+    "Net Sales (Month)": "monthly_sales",
+    "Base Rent": "rent",
+    "Selling SqFt": "sqft",
+    "Gross Margin %": "margin_pct"
+  },
+  "value_hints": {
+    "monthly_sales": "strip $ and commas — Aris reads money either way",
+    "margin_pct": "a number like 31.5, not the string '31.5%'",
+    "Banner": "your 'banner'/'brand'/'chain' column all map to chain"
+  },
+  "note": "No code here — a connector is a column-to-field map. Your POS export never leaves your control except as the records you choose to load."
+}

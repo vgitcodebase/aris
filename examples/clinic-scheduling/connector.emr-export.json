@@ -1,0 +1,26 @@
+{
+  "connector": "emr-export-to-clinic-scheduling",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common EMR/practice-management visit export up with the clinic-scheduling pack's fields. Rename the left side to match your export's headers. Load de-identified records only.",
+  "target_pack": "clinic-scheduling",
+  "source": "EMR / practice-management visit export (CSV)",
+  "column_map": {
+    "Encounter ID": "id",
+    "Facility": "clinic",
+    "Department": "department",
+    "City": "city",
+    "State": "state",
+    "Rendering Provider": "provider",
+    "Visit Type": "visit_type",
+    "Encounter Status": "status",
+    "Billed Amount": "charge",
+    "Reimbursed Amount": "reimbursed",
+    "Wait (min)": "wait_minutes"
+  },
+  "value_hints": {
+    "charge": "strip $ and commas — Aris reads money either way",
+    "wait_minutes": "a plain number of minutes",
+    "provider": "de-identify to role/name policy per your compliance rules"
+  },
+  "note": "No code here — a connector is a column-to-field map. Load only the fields you choose; nothing else leaves your systems. Aris answers only from the record and never infers clinical content."
+}
