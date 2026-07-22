@@ -36,11 +36,11 @@ jobs:
       - name: Scan content for keys and engine leakage
         run: |
           set -e
-          if git grep -nE 'BEGIN (OPENSSH|RSA|EC|PGP) PRIVATE KEY|PRIVATE KEY-----' -- .; then
+          if git grep -nE 'BEGIN (OPENSSH|RSA|EC|PGP) PRIVATE KEY|PRIVATE KEY-----' -- . ':!.github/workflows/guard.yml'; then
             echo "::error::private key material found"; exit 1
           fi
           # No internal import / module paths should ever appear in docs.
-          if git grep -nE 'import +validiti|from +validiti|pip install|_vss_|chronicle\.src|validiti_maths|marksign' -- '*.md'; then
+          if git grep -nE 'import +validiti|from +validiti|pip install|_vss_|chronicle\.src|validiti_maths|marksign' -- '*.md' ':!.github/workflows/guard.yml'; then
             echo "::error::internal module / import path referenced in docs — results-only, please"; exit 1
           fi
 
