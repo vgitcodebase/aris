@@ -1,0 +1,27 @@
+{
+  "connector": "csv-export-to-field-audit",
+  "version": "0",
+  "description": "A connector is pure data: it lines the columns of a common CMMS/work-order CSV export up with the field-audit pack's fields, so you can point Aris at records you already have. Rename the left side to match your export's headers.",
+  "target_pack": "field-audit",
+  "source": "CMMS work-order CSV export",
+  "column_map": {
+    "Work Order #": "id",
+    "Location": "site",
+    "Assigned Tech": "technician",
+    "Asset": "equipment",
+    "Task": "action",
+    "Outcome": "result",
+    "City": "city",
+    "State": "state",
+    "WO Status": "status",
+    "Labor Minutes": "duration_min",
+    "Total Cost (USD)": "cost",
+    "Compliance %": "compliance_pct"
+  },
+  "value_hints": {
+    "cost": "strip $ and commas — Aris reads money either way",
+    "compliance_pct": "a number like 98.5, not the string '98.5%'",
+    "Outcome": "your export may say Passed/Failed — those map straight through to result"
+  },
+  "note": "No code here — a connector is a column-to-field map. Aris ingests the mapped records; your CSV never leaves your control except as the records you choose to load."
+}

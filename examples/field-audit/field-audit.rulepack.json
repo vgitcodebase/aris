@@ -1,0 +1,48 @@
+{
+  "pack": "field-audit",
+  "version": "0",
+  "description": "Worked example tool: an equipment field-audit trail — who inspected what, where, the result, time, cost, and compliance.",
+  "record_schema": {
+    "id": "string",
+    "site": "string",
+    "technician": "string",
+    "equipment": "string",
+    "action": "string",
+    "result": "string",
+    "city": "string",
+    "state": "string",
+    "status": "string",
+    "duration_min": "number",
+    "cost": "money",
+    "compliance_pct": "percent"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "median": "median", "typical": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "longest": "max", "highest": "max", "most": "max", "worst": "min",
+      "shortest": "min", "lowest": "min", "least": "min", "best": "max"
+    },
+    "metric": {
+      "cost": "cost", "spend": "cost", "charge": "cost",
+      "time": "duration_min", "duration": "duration_min", "minutes": "duration_min",
+      "compliance": "compliance_pct", "passing": "compliance_pct", "score": "compliance_pct"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "audit", "audits", "how", "many", "what", "is", "are", "on", "at", "in"]
+  },
+  "compute": {
+    "units":  { "cost": "$", "duration_min": "", "compliance_pct": "%" },
+    "labels": { "cost": "cost", "duration_min": "time on site (min)", "compliance_pct": "compliance" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["technician", "action", "equipment"], "text": "{technician} performed {action} on the {equipment}" },
+      { "when": ["site"],           "text": "at {site}" },
+      { "when": ["city", "state"],  "text": "({city}, {state})" },
+      { "when": ["result"],         "text": "— result: {result}" },
+      { "when": ["status"],         "text": ". Status: {status}." }
+    ],
+    "fields": ["site", "technician", "equipment", "action", "result", "city", "state", "status", "cost"]
+  }
+}

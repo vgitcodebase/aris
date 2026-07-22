@@ -21,7 +21,7 @@ jobs:
           set -e
           # Only data (.json), docs (.md), config (.yml), and license/notice files belong here.
           BAD=$(git ls-files \
-            | grep -vE '(\.json|\.md|\.yml|\.yaml|\.gitignore)$' \
+            | grep -vE '(\.json|\.jsonl|\.md|\.yml|\.yaml|\.gitignore)$' \
             | grep -vE '(^|/)(LICENSE|NOTICE)$' \
             || true)
           if [ -n "$BAD" ]; then

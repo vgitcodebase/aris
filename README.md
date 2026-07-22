@@ -36,7 +36,11 @@ data file describing *your* vocabulary and how *your* records should read back:
 You publish the pack, point Aris at your records through the API, and you get cited and
 computed answers with signed receipts. That's the whole surface.
 
-**New here? Start with the [Starter Kit](STARTER-KIT.md)** — a phrasebook plus seven
+**Want to see a finished tool first?** [examples/field-audit](examples/field-audit) is a
+**complete worked tool** — a pack, 14 real records, a connector, and the exact cited,
+signed answers it gives back. Clone it, point it at your records, done.
+
+**Ready to build? Start with the [Starter Kit](STARTER-KIT.md)** — a phrasebook plus seven
 worked example packs (signage, retail, logistics, leasing, field service, lending,
 clinic). Copy the closest one and change the words. See **[PACKS.md](PACKS.md)** for the
 four things a pack defines.
