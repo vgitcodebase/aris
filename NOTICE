@@ -1,0 +1,14 @@
+Trinity Web Services — Aris Developer Program
+Copyright (c) 2026 Brian Michael Smith (CrashOverride)
+
+This repository is the member hub for building ON Aris. It contains only data and
+documentation — example packs, the pack data-contract, the results-only API reference,
+and program docs. It contains NO engine source and NO logic, for any audience.
+
+"Trinity Web Services", "Aris", "Genesis", "Abel", "Maths", and "Mark" are brands of
+their owner. Aris is distributed only as a sealed, signed binary. The substrate, the
+engine, and all signing keys are not part of this distribution and are reached only
+through the sealed binary and the hosted API.
+
+The example packs and documentation in this repository are provided under the terms in
+the accompanying LICENSE.

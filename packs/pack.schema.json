@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trinitywebservices.dev/schemas/pack-v0.json",
+  "title": "Aris pack (v0)",
+  "description": "The data contract a member provides to teach Aris a domain. Pure data — no engine details.",
+  "type": "object",
+  "required": ["pack", "version", "record_schema", "vocab", "cite"],
+  "additionalProperties": true,
+  "properties": {
+    "pack": { "type": "string", "description": "Short name for your domain." },
+    "version": { "type": "string", "enum": ["0"], "description": "Pack format version." },
+    "description": { "type": "string" },
+    "record_schema": {
+      "type": "object",
+      "description": "The fields your records carry and their kind.",
+      "minProperties": 1,
+      "additionalProperties": { "type": "string", "enum": ["string", "money", "percent", "number"] }
+    },
+    "vocab": {
+      "type": "object",
+      "description": "How your users' words map to fields and answer kinds.",
+      "required": ["agg", "metric"],
+      "properties": {
+        "agg": {
+          "type": "object",
+          "description": "Words your users say for a kind of answer.",
+          "additionalProperties": { "type": "string", "enum": ["mean", "median", "sum", "count", "max", "min"] }
+        },
+        "metric": {
+          "type": "object",
+          "description": "Words your users say for a numeric field (values must be keys of record_schema).",
+          "additionalProperties": { "type": "string" }
+        },
+        "stop": {
+          "type": "array",
+          "description": "Filler words to ignore.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "compute": {
+      "type": "object",
+      "description": "How numbers read back to your users.",
+      "properties": {
+        "units": { "type": "object", "additionalProperties": { "type": "string", "enum": ["$", "%", ""] } },
+        "labels": { "type": "object", "additionalProperties": { "type": "string" } }
+      }
+    },
+    "cite": {
+      "type": "object",
+      "description": "How a matched record reads back as plain English.",
+      "required": ["template", "fields"],
+      "properties": {
+        "template": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text"],
+            "properties": {
+              "when": { "type": "array", "items": { "type": "string" } },
+              "unless": { "type": "array", "items": { "type": "string" } },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "fields": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "pack": "signage",
+  "version": "0",
+  "description": "Reference pack: signage-project records (brands, programs, products, margins).",
+  "record_schema": {
+    "id": "string",
+    "brand": "string",
+    "program": "string",
+    "city": "string",
+    "state": "string",
+    "product_name": "string",
+    "partner_name": "string",
+    "phase": "string",
+    "contract": "money",
+    "build_cost": "money",
+    "margin_pct": "percent",
+    "qty": "number"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "mean": "mean",
+      "median": "median", "typical": "median",
+      "total": "sum", "sum": "sum", "combined": "sum",
+      "count": "count", "many": "count", "number": "count",
+      "highest": "max", "max": "max", "largest": "max", "biggest": "max", "most": "max",
+      "lowest": "min", "min": "min", "smallest": "min", "least": "min"
+    },
+    "metric": {
+      "margin": "margin_pct", "margins": "margin_pct", "profit": "margin_pct",
+      "cost": "build_cost", "build": "build_cost", "budget": "build_cost", "spend": "build_cost",
+      "contract": "contract", "value": "contract", "revenue": "contract", "deal": "contract",
+      "qty": "qty", "quantity": "qty", "units": "qty", "volume": "qty"
+    },
+    "stop": ["the","a","an","of","on","in","for","our","we","did","do","projects","project",
+             "what","whats","is","are","how","and","to","with","by","across","all","have"]
+  },
+  "compute": {
+    "units":  { "margin_pct": "%", "build_cost": "$", "contract": "$", "qty": "" },
+    "labels": { "margin_pct": "margin", "build_cost": "build cost",
+                "contract": "contract value", "qty": "sign quantity" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["brand","program"], "text": "For {brand}, we ran {program}" },
+      { "when": ["program"],         "text": "We ran {program}", "unless": ["brand"] },
+      { "when": ["city","state"],    "text": "in {city}, {state}" },
+      { "when": ["product_name"],    "text": "using the {product_name}" },
+      { "when": ["partner_name"],    "text": "with {partner_name}" },
+      { "when": ["phase"],           "text": ". Status: {phase}." }
+    ],
+    "fields": ["brand","program","city","state","product_name","partner_name","phase","contract"]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "pack": "clinic-scheduling",
+  "version": "0",
+  "description": "Example pack: outpatient clinic visit records (a second domain, to show the format travels).",
+  "record_schema": {
+    "id": "string",
+    "clinic": "string",
+    "department": "string",
+    "city": "string",
+    "state": "string",
+    "provider": "string",
+    "visit_type": "string",
+    "status": "string",
+    "charge": "money",
+    "reimbursed": "money",
+    "wait_minutes": "number"
+  },
+  "vocab": {
+    "agg": {
+      "average": "mean", "avg": "mean", "typical": "median", "median": "median",
+      "total": "sum", "combined": "sum",
+      "how many": "count", "count": "count", "number": "count",
+      "longest": "max", "highest": "max", "most": "max",
+      "shortest": "min", "lowest": "min", "least": "min"
+    },
+    "metric": {
+      "wait": "wait_minutes", "delay": "wait_minutes",
+      "charge": "charge", "billed": "charge",
+      "reimbursed": "reimbursed", "paid": "reimbursed", "collected": "reimbursed"
+    },
+    "stop": ["the", "a", "an", "of", "for", "our", "we", "visits", "visit", "how", "many", "what", "is", "are", "at", "in"]
+  },
+  "compute": {
+    "units":  { "charge": "$", "reimbursed": "$", "wait_minutes": "" },
+    "labels": { "charge": "charge", "reimbursed": "amount reimbursed", "wait_minutes": "wait (minutes)" }
+  },
+  "cite": {
+    "template": [
+      { "when": ["clinic", "visit_type"], "text": "At {clinic}, a {visit_type} visit" },
+      { "when": ["department"],           "text": "in {department}" },
+      { "when": ["city", "state"],        "text": "({city}, {state})" },
+      { "when": ["provider"],             "text": "with {provider}" },
+      { "when": ["status"],               "text": ". Status: {status}." }
+    ],
+    "fields": ["clinic", "department", "city", "state", "provider", "visit_type", "status", "charge"]
+  }
+}

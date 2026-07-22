@@ -1,0 +1,72 @@
+name: boundary guard
+
+# Enforces the one permanent rule: this repo holds data + docs only — never source,
+# never logic, never keys, never real records. Also validates every pack against the
+# published data-contract and enforces DCO sign-off. See SECURITY.md.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  no-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reject any source code or runnable logic
+        run: |
+          set -e
+          # Only data (.json), docs (.md), config (.yml), and license/notice files belong here.
+          BAD=$(git ls-files \
+            | grep -vE '(\.json|\.md|\.yml|\.yaml|\.gitignore)$' \
+            | grep -vE '(^|/)(LICENSE|NOTICE)$' \
+            || true)
+          if [ -n "$BAD" ]; then
+            echo "::error::non-data/doc files are not allowed in this repo (no source, ever):"; echo "$BAD"; exit 1
+          fi
+          # Belt-and-suspenders: explicit source/binary/key extensions must never appear.
+          BAD2=$(git ls-files | grep -iE '\.(py|pyc|js|ts|jsx|tsx|go|rs|c|cc|cpp|h|hpp|java|rb|sh|bin|so|deb|whl|pem|key|p8|vss|corpus)$' || true)
+          if [ -n "$BAD2" ]; then
+            echo "::error::source / binary / key material detected:"; echo "$BAD2"; exit 1
+          fi
+
+      - name: Scan content for keys and engine leakage
+        run: |
+          set -e
+          if git grep -nE 'BEGIN (OPENSSH|RSA|EC|PGP) PRIVATE KEY|PRIVATE KEY-----' -- .; then
+            echo "::error::private key material found"; exit 1
+          fi
+          # No internal import / module paths should ever appear in docs.
+          if git grep -nE 'import +validiti|from +validiti|pip install|_vss_|chronicle\.src|validiti_maths|marksign' -- '*.md'; then
+            echo "::error::internal module / import path referenced in docs — results-only, please"; exit 1
+          fi
+
+      - name: Enforce DCO sign-off
+        if: github.event_name == 'pull_request'
+        run: |
+          set -e
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          missing=0
+          for c in $(git rev-list "$base..$head"); do
+            git log -1 --format='%B' "$c" | grep -q '^Signed-off-by: ' || { echo "missing DCO sign-off: $c"; missing=1; }
+          done
+          [ "$missing" = 0 ] || { echo "::error::every commit must be signed off (git commit -s)"; exit 1; }
+
+  validate-packs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install check-jsonschema
+      - name: Validate every pack against the data-contract
+        run: |
+          for p in packs/*.rulepack.json; do
+            echo "validating $p"
+            check-jsonschema --schemafile packs/pack.schema.json "$p"
+          done
