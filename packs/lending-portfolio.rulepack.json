@@ -1,7 +1,7 @@
 {
   "pack": "lending-portfolio",
-  "version": "0",
-  "description": "Example pack: a lending book — principal, interest, rate, and loan-to-value by borrower.",
+  "version": "1",
+  "description": "Worked v1 pack: a lending book — principal, interest, rate, and loan-to-value by borrower. Shows every v1 section (aliases, polarity, thresholds, focus, out_of_domain, dates, watchdog) on top of the v0 basics. Everything here is data about YOUR world; the sealed Aris engine does the rest.",
   "record_schema": {
     "id": "string",
     "lender": "string",
@@ -10,6 +10,7 @@
     "city": "string",
     "state": "string",
     "status": "string",
+    "originated": "date",
     "principal": "money",
     "interest_collected": "money",
     "term_months": "number",
@@ -25,14 +26,56 @@
       "lowest": "min", "smallest": "min", "least": "min"
     },
     "metric": {
-      "principal": "principal", "balance": "principal", "loan": "principal",
-      "interest": "interest_collected", "collected": "interest_collected",
+      "principal": "principal", "balance": "principal", "loan": "principal", "size": "principal",
+      "interest": "interest_collected", "collected": "interest_collected", "earnings": "interest_collected",
       "rate": "rate_pct", "apr": "rate_pct",
-      "ltv": "ltv_pct",
+      "ltv": "ltv_pct", "leverage": "ltv_pct",
       "term": "term_months", "length": "term_months"
     },
     "stop": ["the", "a", "an", "of", "for", "our", "we", "loan", "loans", "how", "many", "what", "is", "are", "in", "at"]
   },
+  "aliases": {
+    "product": {
+      "mortgage": "mortgage",
+      "commercial": "commercial",
+      "construction": "construction",
+      "line of credit": "line of credit",
+      "heloc": "line of credit"
+    },
+    "status": {
+      "delinquent": "delinquent",
+      "late": "delinquent",
+      "current": "current",
+      "paid off": "paid",
+      "closed out": "paid"
+    }
+  },
+  "polarity": [
+    { "terms": ["underwater", "overleveraged", "riskiest", "most exposed"], "field": "ltv_pct", "direction": "max" },
+    { "terms": ["safest", "most conservative", "best collateralized"], "field": "ltv_pct", "direction": "min" },
+    { "terms": ["best earners", "richest", "top earning"], "field": "interest_collected", "direction": "max" },
+    { "terms": ["thinnest", "lowest yielding"], "field": "rate_pct", "direction": "min" }
+  ],
+  "thresholds": {
+    "high-risk": { "field": "ltv_pct", "op": ">", "value": 80 },
+    "underwater": { "field": "ltv_pct", "op": ">", "value": 100 },
+    "jumbo": { "field": "principal", "op": ">", "value": 1000000 },
+    "high-rate": { "field": "rate_pct", "op": ">", "value": 7 },
+    "small": { "field": "principal", "op": "<", "value": 250000 }
+  },
+  "focus": {
+    "where": ["city", "state"],
+    "who": ["lender", "borrower"],
+    "when": ["originated"]
+  },
+  "out_of_domain": ["ceo", "president", "owner", "weather", "forecast", "credit score", "fico", "ssn", "poem", "stock price"],
+  "dates": { "field": "originated" },
+  "watchdog": [
+    { "kind": "compare", "field": "ltv_pct", "op": "<=", "value": 100, "message": "loan-to-value over 100% — the loan is larger than the collateral behind it" },
+    { "kind": "compare", "field": "rate_pct", "op": ">=", "value": 0, "message": "negative interest rate — check the entry" },
+    { "kind": "compare", "field": "principal", "op": ">", "value": 0, "message": "principal is zero or negative" },
+    { "kind": "outlier", "field": "rate_pct", "method": "iqr", "k": 3, "message": "rate is far outside the normal range for this book — worth a look" }
+  ],
   "compute": {
     "units":  { "principal": "$", "interest_collected": "$", "term_months": "", "rate_pct": "%", "ltv_pct": "%" },
     "labels": { "principal": "principal", "interest_collected": "interest collected", "term_months": "term (months)", "rate_pct": "rate", "ltv_pct": "loan-to-value" }
@@ -44,6 +87,6 @@
       { "when": ["city", "state"],       "text": "({city}, {state})" },
       { "when": ["status"],              "text": ". Status: {status}." }
     ],
-    "fields": ["lender", "borrower", "product", "city", "state", "status", "principal"]
+    "fields": ["lender", "borrower", "product", "city", "state", "status", "originated", "principal"]
   }
 }

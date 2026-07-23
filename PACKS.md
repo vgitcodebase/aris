@@ -57,6 +57,25 @@ clause appears only when its fields are present, so answers never read awkwardly
 }
 ```
 
+## Going further — teach Aris more (pack v1)
+
+The four parts above are all you need to start. When you're ready, **pack v1** adds six
+optional sections that make Aris understand your people the way they actually talk — and a
+seventh that lets Aris *watch* your records for you. All still pure data.
+
+- **[UNDERSTANDING.md](packs/UNDERSTANDING.md)** — `aliases` (words that mean a value, like
+  "fast food" → an industry), `polarity` (idioms for the good/bad end of a number, like
+  "bleeding money"), `thresholds` (named cuts like "high-risk"), `focus` (which field answers
+  "where / who / when"), `dates` (relative time — "this year", "last quarter"), and
+  `out_of_domain` (what your records *can't* answer). Aris also **carries a conversation**:
+  ask a question, then a follow-up that leaves out the obvious, and it keeps the earlier scope.
+- **[WATCHDOG.md](packs/WATCHDOG.md)** — `watchdog` rules: declare what should always be true
+  ("loan-to-value can't exceed 100%", "the stated total must match the parts") and Aris flags
+  the records that break it, with your message, signed.
+
+The worked pack **[lending-portfolio.rulepack.json](packs/lending-portfolio.rulepack.json)**
+uses every v1 section. Bump `"version": "1"` and validate the same way.
+
 ## Rules a pack always keeps
 
 - **Records-first.** Every answer resolves to a real record or an honest "no record" —

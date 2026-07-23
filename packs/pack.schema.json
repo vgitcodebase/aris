@@ -1,20 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://trinitywebservices.dev/schemas/pack-v0.json",
-  "title": "Aris pack (v0)",
-  "description": "The data contract a member provides to teach Aris a domain. Pure data — no engine details.",
+  "$id": "https://trinitywebservices.dev/schemas/pack-v1.json",
+  "title": "Aris pack (v1)",
+  "description": "The data contract a member provides to teach Aris a domain. Pure data — no engine details. v1 adds optional sections (aliases, polarity, thresholds, focus, out_of_domain, dates, watchdog) that teach Aris more of how your people talk and what 'doesn't add up' — all still plain data. v0 packs remain valid.",
   "type": "object",
   "required": ["pack", "version", "record_schema", "vocab", "cite"],
   "additionalProperties": true,
   "properties": {
     "pack": { "type": "string", "description": "Short name for your domain." },
-    "version": { "type": "string", "enum": ["0"], "description": "Pack format version." },
+    "version": { "type": "string", "enum": ["0", "1"], "description": "Pack format version." },
     "description": { "type": "string" },
     "record_schema": {
       "type": "object",
-      "description": "The fields your records carry and their kind.",
+      "description": "The fields your records carry and their kind. Use 'date' for an ISO date (YYYY-MM-DD).",
       "minProperties": 1,
-      "additionalProperties": { "type": "string", "enum": ["string", "money", "percent", "number"] }
+      "additionalProperties": { "type": "string", "enum": ["string", "money", "percent", "number", "date"] }
     },
     "vocab": {
       "type": "object",
@@ -35,6 +35,83 @@
           "type": "array",
           "description": "Filler words to ignore.",
           "items": { "type": "string" }
+        }
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "description": "Words your users say that mean a specific VALUE in one of your fields — e.g. 'fast food' means the industry 'quick service', 'the bank' means a lender. Keyed by field name; each maps an everyday phrase to a value (or a distinctive part of a value) that appears in your records.",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      }
+    },
+    "polarity": {
+      "type": "array",
+      "description": "Idioms that mean 'the good end' or 'the bad end' of a number — e.g. 'bleeding money' means the lowest margin, 'safest loans' means the lowest loan-to-value. Each entry lists the words and which direction, on which field, they point.",
+      "items": {
+        "type": "object",
+        "required": ["terms", "field", "direction"],
+        "additionalProperties": false,
+        "properties": {
+          "terms": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "field": { "type": "string", "description": "A numeric field from record_schema." },
+          "direction": { "type": "string", "enum": ["max", "min"] }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "description": "Named filters your users say — 'high-risk' means loan-to-value over 80, 'profitable' means margin over 0. Aris counts and filters the records that meet them, and follow-ups can stack on top.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["field", "op", "value"],
+        "additionalProperties": false,
+        "properties": {
+          "field": { "type": "string" },
+          "op": { "type": "string", "enum": [">", "<", ">=", "<="] },
+          "value": { "type": "number" }
+        }
+      }
+    },
+    "focus": {
+      "type": "object",
+      "description": "Which field answers a question word — 'where' -> location, 'who' -> the party, 'when' -> the date. Keyed by the question word; the value is the field(s) that answer it.",
+      "additionalProperties": { "type": "array", "items": { "type": "string" } }
+    },
+    "out_of_domain": {
+      "type": "array",
+      "description": "Words that signal a question your records can't answer — 'ceo', 'weather', 'forecast', 'credit score'. When one appears, Aris says 'no record' instead of guessing on an incidental name match.",
+      "items": { "type": "string" }
+    },
+    "dates": {
+      "type": "object",
+      "description": "Enables relative-time questions ('this year', 'last quarter', 'in 2025').",
+      "required": ["field"],
+      "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string", "description": "The record_schema field (kind 'date') that time questions filter on." }
+      }
+    },
+    "watchdog": {
+      "type": "array",
+      "description": "Consistency rules Aris checks across your records and signs. A record that breaks one is flagged with YOUR message and the reason — the rest stay silent (a clean bill). All declarative: no code.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "message"],
+        "additionalProperties": true,
+        "properties": {
+          "kind": { "type": "string", "enum": ["compare", "formula", "order", "outlier"] },
+          "message": { "type": "string", "description": "Plain-English reason shown when a record breaks this rule." },
+          "field": { "type": "string" },
+          "op": { "type": "string", "enum": [">", "<", ">=", "<="] },
+          "value": { "type": "number" },
+          "expr": { "type": "string", "description": "For kind 'formula': an arithmetic relationship among your fields using + - * / ( ) and one '==', e.g. 'margin_pct == (contract - build_cost) / contract * 100'. Aris flags records where the two sides differ by more than 'tolerance'." },
+          "tolerance": { "type": "number" },
+          "before": { "type": "string", "description": "For kind 'order': a date/step field that must not come after 'after'." },
+          "after": { "type": "string" },
+          "method": { "type": "string", "enum": ["iqr", "zscore"], "description": "For kind 'outlier'." },
+          "k": { "type": "number", "description": "For kind 'outlier': how many spreads out counts as an outlier (e.g. 3)." }
         }
       }
     },

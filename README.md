@@ -52,6 +52,23 @@ worked example packs (signage, retail, logistics, leasing, field service, lendin
 clinic). Copy the closest one and change the words. See **[PACKS.md](PACKS.md)** for the
 four things a pack defines.
 
+### You can teach Aris a lot more — still with data only
+
+A pack can go well beyond basic questions, all by writing data about *your* world:
+
+- **Talk like your team** — map your idioms and shorthand ("fast food", "bleeding money",
+  "high-risk", "underwater") to your fields, and let "where / who / when" answer directly.
+  See **[packs/UNDERSTANDING.md](packs/UNDERSTANDING.md)**.
+- **Ask relative-time questions** — "this year", "last quarter", "in 2025".
+- **Hold a conversation** — ask, then follow up ("what about Texas", "just the high-risk
+  ones", "average rate on those") and Aris keeps the thread — cited and signed at every step.
+- **Let Aris watch your books** — declare what should always be true and Aris flags the
+  records that don't add up, with your message. See **[packs/WATCHDOG.md](packs/WATCHDOG.md)**.
+
+The worked **[packs/lending-portfolio.rulepack.json](packs/lending-portfolio.rulepack.json)**
+shows every one of these. None of it is code — you describe your world, the sealed engine
+does the rest.
+
 ```
 Your records  ──▶  Aris (sealed)  ──▶  cited / computed answer + signed receipt
    your pack ─────────▲                         you verify it yourself
