@@ -1,16 +1,20 @@
 {
   "pack": "signage",
-  "version": "0",
-  "description": "Reference pack: signage-project records (brands, programs, products, margins).",
+  "version": "1",
+  "description": "Reference v1 pack: signage-project records (brands, programs, products, margins). This same file drives the live Aris signage demo — a member pack, pure data, teaching Aris the vocabulary, the idioms, the named cuts, the dates, and the consistency rules of this domain.",
   "record_schema": {
     "id": "string",
     "brand": "string",
+    "industry": "string",
     "program": "string",
     "city": "string",
     "state": "string",
+    "county": "string",
+    "product_sku": "string",
     "product_name": "string",
     "partner_name": "string",
     "phase": "string",
+    "effective": "date",
     "contract": "money",
     "build_cost": "money",
     "margin_pct": "percent",
@@ -26,14 +30,47 @@
       "lowest": "min", "min": "min", "smallest": "min", "least": "min"
     },
     "metric": {
-      "margin": "margin_pct", "margins": "margin_pct", "profit": "margin_pct",
-      "cost": "build_cost", "build": "build_cost", "budget": "build_cost", "spend": "build_cost",
-      "contract": "contract", "value": "contract", "revenue": "contract", "deal": "contract",
-      "qty": "qty", "quantity": "qty", "units": "qty", "volume": "qty"
+      "margin": "margin_pct", "margins": "margin_pct", "profit": "margin_pct", "profitability": "margin_pct", "returns": "margin_pct",
+      "cost": "build_cost", "build": "build_cost", "budget": "build_cost", "spend": "build_cost", "materials": "build_cost",
+      "contract": "contract", "value": "contract", "revenue": "contract", "deal": "contract", "booked": "contract", "exposure": "contract",
+      "qty": "qty", "quantity": "qty", "units": "qty", "volume": "qty", "signs": "qty"
     },
     "stop": ["the","a","an","of","on","in","for","our","we","did","do","projects","project",
              "what","whats","is","are","how","and","to","with","by","across","all","have"]
   },
+  "aliases": {
+    "industry": {
+      "fast food": "quick service", "qsr": "quick service", "restaurant": "quick service", "restaurants": "quick service",
+      "gas": "petroleum", "oil": "petroleum", "fuel": "petroleum", "gasoline": "petroleum",
+      "bank": "banking", "banks": "banking", "financial": "banking", "finance": "banking",
+      "car": "automotive", "cars": "automotive", "auto": "automotive", "dealership": "automotive", "vehicle": "automotive",
+      "store": "retail", "stores": "retail", "shop": "retail", "retailer": "retail", "retailers": "retail",
+      "hospital": "healthcare", "medical": "healthcare", "clinic": "healthcare", "health": "healthcare", "hotel": "healthcare"
+    }
+  },
+  "polarity": [
+    { "terms": ["bleeding", "losing", "underwater", "unprofitable", "worst", "weakest", "hemorrhaging"], "field": "margin_pct", "direction": "min" },
+    { "terms": ["best", "strongest", "fattest", "healthiest", "most profitable", "top-performing"], "field": "margin_pct", "direction": "max" }
+  ],
+  "thresholds": {
+    "profitable": { "field": "margin_pct", "op": ">", "value": 0 },
+    "losing": { "field": "margin_pct", "op": "<", "value": 0 },
+    "high-margin": { "field": "margin_pct", "op": ">", "value": 30 },
+    "big": { "field": "contract", "op": ">", "value": 20000 },
+    "small": { "field": "contract", "op": "<", "value": 5000 }
+  },
+  "focus": {
+    "where": ["city", "state"],
+    "who": ["partner_name", "brand"],
+    "when": ["effective"]
+  },
+  "out_of_domain": ["ceo", "president", "owner", "weather", "forecast", "temperature", "poem", "recipe", "stock price", "capital", "population"],
+  "dates": { "field": "effective" },
+  "watchdog": [
+    { "kind": "formula", "expr": "margin_pct == (contract - build_cost) / contract * 100", "tolerance": 0.6, "message": "the stated margin doesn't match contract minus build cost" },
+    { "kind": "compare", "field": "contract", "op": ">", "value": 0, "message": "contract value is zero or negative" },
+    { "kind": "outlier", "field": "margin_pct", "method": "iqr", "k": 3, "message": "margin is far outside the normal range for this book" }
+  ],
   "compute": {
     "units":  { "margin_pct": "%", "build_cost": "$", "contract": "$", "qty": "" },
     "labels": { "margin_pct": "margin", "build_cost": "build cost",
@@ -48,6 +85,6 @@
       { "when": ["partner_name"],    "text": "with {partner_name}" },
       { "when": ["phase"],           "text": ". Status: {phase}." }
     ],
-    "fields": ["brand","program","city","state","product_name","partner_name","phase","contract"]
+    "fields": ["brand","program","city","state","product_name","partner_name","phase","effective","contract"]
   }
 }
